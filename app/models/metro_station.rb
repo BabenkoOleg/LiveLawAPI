@@ -1,25 +1,24 @@
 # == Schema Information
 #
-# Table name: cities
+# Table name: metro_stations
 #
 #  id         :integer          not null, primary key
 #  name       :string
-#  size       :integer
-#  region_id  :integer
+#  city_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 # Indexes
 #
-#  index_cities_on_region_id  (region_id)
+#  index_metro_stations_on_city_id  (city_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (region_id => regions.id)
+#  fk_rails_...  (city_id => cities.id)
 #
 
-class City < ApplicationRecord
+class MetroStation < ApplicationRecord
   # Relations ------------------------------------------------------------------
 
-  belongs_to :region
+  belongs_to :city
 end
