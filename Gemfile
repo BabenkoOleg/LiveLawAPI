@@ -27,9 +27,10 @@ gem 'puma', '~> 3.7'
 
 # Token based authentication for Rails JSON APIs. Designed to work with jToker and ng-token-auth.
 gem 'devise_token_auth'
-
 # Simple Rails app configuration
 gem "figaro"
+# ActiveModel::Serializer implementation and Rails hooks
+gem 'active_model_serializers'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
