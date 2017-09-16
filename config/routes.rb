@@ -10,5 +10,6 @@ Rails.application.routes.draw do
 
     resources :regions, only: [:index, :show]
     resources :cities, only: [:index, :show]
+    resources :categories, only: [:index, :show]
   end
 end
