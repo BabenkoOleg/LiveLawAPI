@@ -1,15 +1,21 @@
 # == Schema Information
 #
-# Table name: regions
+# Table name: cities
 #
 #  id         :integer          not null, primary key
 #  name       :string
+#  size       :integer
+#  region_id  :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_cities_on_region_id  (region_id)
+#
 
-class Region < ApplicationRecord
+class City < ApplicationRecord
   # Relations ------------------------------------------------------------------
 
-  has_many :cities
+  belongs_to :region
 end
