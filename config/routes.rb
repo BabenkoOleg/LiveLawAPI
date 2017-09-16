@@ -4,6 +4,8 @@ Rails.application.routes.draw do
       sessions: 'api/users/sessions'
     }
 
-    resources :users, only: [:index, :show]
+    resources :users, only: [:index, :show] do
+      get 'search_email', on: :collection
+    end
   end
 end

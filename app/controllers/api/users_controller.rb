@@ -17,4 +17,9 @@ class Api::UsersController < Api::ApplicationController
   def show
     render( { json: @user }.merge set_render_options )
   end
+
+  # GET /users/search_email
+  def search_email
+    head User.find_by(email: params[:query]).present? ? :ok : :not_found
+  end
 end
