@@ -67,6 +67,10 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   include UsersFilter
 
+  # Relations ------------------------------------------------------------------
+
+    has_and_belongs_to_many :cities
+
   # Fields ---------------------------------------------------------------------
 
   enum role: [:client, :lawyer, :jurist, :blocked]

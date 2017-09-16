@@ -29,6 +29,8 @@ class City < ApplicationRecord
 
   has_many :metro_stations
 
+  has_and_belongs_to_many :users
+
   # Methods --------------------------------------------------------------------
 
   def region_name
