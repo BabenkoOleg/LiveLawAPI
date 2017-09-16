@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170916223427) do
+ActiveRecord::Schema.define(version: 20170916231943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "category_prices", force: :cascade do |t|
+    t.bigint "category_id"
+    t.integer "day_1", default: 0
+    t.integer "day_3", default: 0
+    t.integer "day_7", default: 0
+    t.integer "month_1", default: 0
+    t.integer "month_3", default: 0
+    t.integer "month_6", default: 0
+    t.integer "month_12", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_category_prices_on_category_id"
+  end
 
   create_table "cities", force: :cascade do |t|
     t.string "name"
@@ -91,6 +111,7 @@ ActiveRecord::Schema.define(version: 20170916223427) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "category_prices", "categories"
   add_foreign_key "cities", "regions"
   add_foreign_key "metro_stations", "cities"
 end
