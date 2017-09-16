@@ -35,6 +35,8 @@ gem 'active_model_serializers'
 gem 'kaminari'
 # Pretty print your Ruby objects with style -- in full color and with proper indentation
 gem 'awesome_print'
+# Ruby/ProgressBar is a text progress bar library for Ruby
+gem 'ruby-progressbar'
 
 group :development do
   # Annotate Rails classes with schema and routes info
