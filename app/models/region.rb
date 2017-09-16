@@ -9,6 +9,10 @@
 #
 
 class Region < ApplicationRecord
+  # Includes -------------------------------------------------------------------
+
+  include CitiesFilter
+
   # Relations ------------------------------------------------------------------
 
   has_many :cities

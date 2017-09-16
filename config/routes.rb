@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       get 'search_email', on: :collection
     end
 
+    resources :regions, only: [:index, :show]
     resources :cities, only: [:index, :show]
   end
 end
