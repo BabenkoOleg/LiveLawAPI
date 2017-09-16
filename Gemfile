@@ -33,11 +33,8 @@ gem "figaro"
 gem 'active_model_serializers'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for modern web app frameworks and ORMs
 gem 'kaminari'
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-end
+# Pretty print your Ruby objects with style -- in full color and with proper indentation
+gem 'awesome_print'
 
 group :development do
   # An IRB alternative and runtime developer console
