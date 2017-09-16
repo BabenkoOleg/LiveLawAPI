@@ -37,6 +37,8 @@ gem 'kaminari'
 gem 'awesome_print'
 
 group :development do
+  # Annotate Rails classes with schema and routes info
+  gem 'annotate'
   # An IRB alternative and runtime developer console
   gem 'pry'
   gem 'listen', '>= 3.0.5', '< 3.2'

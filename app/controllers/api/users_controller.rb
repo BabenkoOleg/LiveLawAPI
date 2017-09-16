@@ -1,4 +1,4 @@
-class Api::UsersController < Api::ApplicationController
+class Api::UsersController < ApplicationController
   # GET /users
   def index
     @users = User.filter_by(params)
