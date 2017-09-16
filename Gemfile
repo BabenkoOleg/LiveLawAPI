@@ -31,6 +31,8 @@ gem 'devise_token_auth'
 gem "figaro"
 # ActiveModel::Serializer implementation and Rails hooks
 gem 'active_model_serializers'
+# A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for modern web app frameworks and ORMs
+gem 'kaminari'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
