@@ -7,5 +7,7 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show] do
       get 'search_email', on: :collection
     end
+
+    resources :cities, only: [:index, :show]
   end
 end

@@ -19,7 +19,19 @@
 #
 
 class City < ApplicationRecord
+  # Includes -------------------------------------------------------------------
+
+  include CitiesFilter
+
   # Relations ------------------------------------------------------------------
 
   belongs_to :region
+
+  has_many :metro_stations
+
+  # Methods --------------------------------------------------------------------
+
+  def region_name
+    region.name
+  end
 end
