@@ -11,5 +11,9 @@ Rails.application.routes.draw do
     resources :regions, only: [:index, :show]
     resources :cities, only: [:index, :show]
     resources :categories, only: [:index, :show]
+
+    get 'get_token', to: 'guests#get_token'
+
+    mount ActionCable.server => "/cable"
   end
 end
