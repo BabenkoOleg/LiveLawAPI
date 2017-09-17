@@ -18,4 +18,8 @@
 #
 
 class Question < ApplicationRecord
+  # Relations ------------------------------------------------------------------
+
+  belongs_to :user
+  belongs_to :category
 end
