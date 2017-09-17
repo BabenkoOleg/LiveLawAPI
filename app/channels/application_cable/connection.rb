@@ -2,8 +2,8 @@ module ApplicationCable
   class Connection < ActionCable::Connection::Base
     identified_by :current_user
 
-    # ws://localhost:3000/cable/?access-token=zZ12GuNyGYR5HM7yhYwPpg&client=Fgp76lGbk3xmqCzhBy1DbQ&uid=client1@example.com
-    # ws://localhost:3000/cable/?guest-token=ascASFSACajcsSosS5scwP
+    # ?access-token=zZ12GuNyGYR5HM7yhYwPpg&client=Fgp76lGbk3xmqCzhBy1DbQ&uid=client1@example.com
+    # ?guest-token=ascASFSACajcsSosS5scwP
     def connect
       params = request.query_parameters
 
