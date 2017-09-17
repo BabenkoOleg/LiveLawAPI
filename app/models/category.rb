@@ -11,10 +11,10 @@
 class Category < ApplicationRecord
   # Relations ------------------------------------------------------------------
 
+  has_one :prices, class_name: 'CategoryPrice'
+
   has_many :bought_categories
   has_many :users, through: :bought_categories
-
-  has_one :prices, class_name: 'CategoryPrice'
 
   # Callbacks ------------------------------------------------------------------
 

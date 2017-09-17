@@ -20,7 +20,7 @@
 class Question < ApplicationRecord
   # Includes -------------------------------------------------------------------
 
-    include QuestionsFilter
+  include QuestionsFilter
 
   # Relations ------------------------------------------------------------------
 
