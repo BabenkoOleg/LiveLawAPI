@@ -39,6 +39,8 @@ gem 'awesome_print'
 gem 'ruby-progressbar'
 
 group :development do
+  # Preview mail in the browser instead of sending.
+  gem 'letter_opener'
   # Annotate Rails classes with schema and routes info
   gem 'annotate'
   # An IRB alternative and runtime developer console
