@@ -27,7 +27,7 @@ class ApplicationController < ActionController::API
     }
 
     user.save
-    # UsersMailer.send_password(user.email, password).deliver
+    UsersMailer.send_password(user.email, password).deliver
     return user
   end
 end
