@@ -69,6 +69,7 @@ class User < ActiveRecord::Base
 
   # Relations ------------------------------------------------------------------
 
+    has_many :questions
     has_many :bought_categories
     has_many :categories, through: :bought_categories
 
