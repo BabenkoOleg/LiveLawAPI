@@ -14,5 +14,3 @@ test:
 production:
   <<: *default
   database: LiveLawAPI_production
-  username: LiveLawAPI
-  password: <%= ENV['LIVELAWAPI_DATABASE_PASSWORD'] %>
