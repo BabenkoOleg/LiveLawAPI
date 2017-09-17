@@ -18,6 +18,10 @@
 #
 
 class Question < ApplicationRecord
+  # Includes -------------------------------------------------------------------
+
+    include QuestionsFilter
+
   # Relations ------------------------------------------------------------------
 
   belongs_to :user
