@@ -22,4 +22,18 @@ class Api::UsersController < ApplicationController
   def search_email
     head User.find_by(email: params[:query]).present? ? :ok : :not_found
   end
+
+  # POST /users/1/invite_to_chat
+  def invite_to_chat
+    user = User.find(params[:user_id])
+
+    if (user.lawyer? || user.jurist?) && user.online?
+      channel_id = SecureRandom.urlsafe_base64(nil, false)
+      message = { user_id: user.id, type: :invite, channel_id: channel_id }
+      ActionCable.server.broadcast('appearance_channel', message)
+      render json: { channel_id: channel_id }
+    else
+      head :unprocessable_entity
+    end
+  end
 end

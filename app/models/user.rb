@@ -81,6 +81,12 @@ class User < ActiveRecord::Base
 
   # Methods --------------------------------------------------------------------
 
+  class << self
+    def random_password
+      Devise.friendly_token[0,20]
+    end
+  end
+
   def full_name
     [last_name, first_name, middle_name].compact.join(' ')
   end

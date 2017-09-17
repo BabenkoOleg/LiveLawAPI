@@ -25,7 +25,7 @@ class Api::QuestionsController < ApplicationController
 
   # POST /questions
   def create
-    user = current_user || register_user
+    user = current_api_user || register_user(user_params)
     @question = user.questions.build(question_params)
 
     if @question.save
