@@ -69,6 +69,9 @@ class User < ActiveRecord::Base
 
   # Relations ------------------------------------------------------------------
 
+    has_many :bought_categories
+    has_many :categories, through: :bought_categories
+
     has_and_belongs_to_many :cities
 
   # Fields ---------------------------------------------------------------------

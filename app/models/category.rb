@@ -11,6 +11,9 @@
 class Category < ApplicationRecord
   # Relations ------------------------------------------------------------------
 
+  has_many :bought_categories
+  has_many :users, through: :bought_categories
+
   has_one :prices, class_name: 'CategoryPrice'
 
   # Callbacks ------------------------------------------------------------------
@@ -18,6 +21,13 @@ class Category < ApplicationRecord
   after_commit :create_prices, on: [:create]
 
   # Methods --------------------------------------------------------------------
+
+  def bought?(user)
+    bought = bought_categories.find_by(user_id: user.id)
+    return false if bought.nil?
+    return bought.delete && false if DateTime.now >= bought.payment_expiration
+    true
+  end
 
   private
 
