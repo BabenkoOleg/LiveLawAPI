@@ -26,12 +26,12 @@ class Api::UsersController < ApplicationController
   # POST /users/1/invite_to_chat
   def invite_to_chat
     user = User.find(params[:user_id])
+    chat_token = params[:chat_token]
 
     if (user.lawyer? || user.jurist?) && user.online?
-      channel_id = SecureRandom.urlsafe_base64(nil, false)
-      message = { user_id: user.id, type: :invite, channel_id: channel_id }
+      message = { user_id: user.id, type: :invite, chat_token: chat_token }
       ActionCable.server.broadcast('appearance_channel', message)
-      render json: { channel_id: channel_id }
+      head :ok
     else
       head :unprocessable_entity
     end

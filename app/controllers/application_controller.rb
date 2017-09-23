@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
 
+  def current_authorized_user
+    @current_authorized_user ||= current_api_user || find_guests
+  end
+
   def register_user(params)
     user = User.find_by(email: user_params[:email])
 
@@ -29,5 +33,11 @@ class ApplicationController < ActionController::API
     user.save
     UsersMailer.send_password(user.email, password).deliver
     return user
+  end
+
+  private
+
+  def find_guests
+    Guest.find_by(token: request.headers['guest-token'])
   end
 end

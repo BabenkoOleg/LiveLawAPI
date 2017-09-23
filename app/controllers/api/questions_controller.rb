@@ -11,7 +11,7 @@ class Api::QuestionsController < ApplicationController
       collection =
         ActiveModelSerializers::SerializableResource.new(@questions, {}).as_json
 
-      render json: { result: collection , pagination: pagination }
+      render json: { result: collection, pagination: pagination }
     else
       render json: @questions
     end
