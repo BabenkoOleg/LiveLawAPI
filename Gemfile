@@ -37,6 +37,9 @@ gem 'kaminari'
 gem 'awesome_print'
 # Ruby/ProgressBar is a text progress bar library for Ruby
 gem 'ruby-progressbar'
+# Blazing fast application deployment tool
+gem 'mina'
+gem 'mina-puma'
 
 group :development do
   # Preview mail in the browser instead of sending.

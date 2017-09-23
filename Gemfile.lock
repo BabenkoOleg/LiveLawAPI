@@ -101,11 +101,18 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mina (1.0.7)
+      open4 (~> 1.3.4)
+      rake
+    mina-puma (1.0.1)
+      mina (~> 1.0.0)
+      puma (>= 2.13)
     mini_portile2 (2.2.0)
     minitest (5.10.3)
     nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
+    open4 (1.3.4)
     orm_adapter (0.5.0)
     pg (0.21.0)
     pry (0.10.4)
@@ -186,6 +193,8 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen (>= 3.0.5, < 3.2)
+  mina
+  mina-puma
   pg (~> 0.18)
   pry
   puma (~> 3.7)
@@ -198,4 +207,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.14.6
+   1.16.0.pre.2
