@@ -3,7 +3,8 @@ module UsersFilter
 
   module ClassMethods
     def filter_by(params)
-      users = self.page(params[:page] || 1).per(params[:per_page] || 20)
+      users = self.where.not(role: 'client')
+                  .page(params[:page] || 1).per(params[:per_page] || 20)
 
       users = users.where(role: params[:role].split(',')) if params[:role]
 
