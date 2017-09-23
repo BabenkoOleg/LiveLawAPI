@@ -1,4 +1,4 @@
-class Api::User::RegistrationsController < DeviseTokenAuth::RegistrationsController
+class Api::Users::RegistrationsController < DeviseTokenAuth::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
 
   # POST /resource
