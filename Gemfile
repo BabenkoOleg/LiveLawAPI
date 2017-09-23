@@ -39,7 +39,7 @@ gem 'awesome_print'
 gem 'ruby-progressbar'
 # Blazing fast application deployment tool
 gem 'mina'
-gem 'mina-puma'
+gem 'mina-puma', require: false
 
 group :development do
   # Preview mail in the browser instead of sending.
