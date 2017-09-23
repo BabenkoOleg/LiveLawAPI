@@ -1,5 +1,5 @@
 class User::RegistrationsController < DeviseTokenAuth::RegistrationsController
-  before_filter :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create]
 
   # POST /resource
   def create
