@@ -40,12 +40,12 @@ gem 'ruby-progressbar'
 # Blazing fast application deployment tool
 gem 'mina'
 gem 'mina-puma', require: false
+# Annotate Rails classes with schema and routes info
+gem 'annotate'
 
 group :development do
   # Preview mail in the browser instead of sending.
   gem 'letter_opener'
-  # Annotate Rails classes with schema and routes info
-  gem 'annotate'
   # An IRB alternative and runtime developer console
   gem 'pry'
   gem 'listen', '>= 3.0.5', '< 3.2'
