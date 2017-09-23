@@ -19,7 +19,7 @@ class Chat < ApplicationRecord
   # Relations ------------------------------------------------------------------
 
   belongs_to :asker, polymorphic: true
-  belongs_to :answerer, required: false
+  belongs_to :answerer, required: false, class_name: 'User'
   belongs_to :category
   belongs_to :city
 

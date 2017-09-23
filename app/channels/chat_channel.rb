@@ -5,7 +5,7 @@ class ChatChannel < ApplicationCable::Channel
 
     if chat.present?
       if current_user.kind_of?(User) && ['lawyer', 'jurist'].include?(current_user.role) && chat.answerer.nil?
-        chat.answerer = current_user
+        chat.update(answerer: current_user)
       end
 
       stream_from "chat_#{chat_token}_channel"

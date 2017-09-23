@@ -26,10 +26,15 @@ class Api::UsersController < ApplicationController
   # POST /users/1/invite_to_chat
   def invite_to_chat
     user = User.find(params[:user_id])
-    chat_token = params[:chat_token]
+    chat = Chat.find_by(token: params[:chat_token])
 
     if (user.lawyer? || user.jurist?) && user.online?
-      message = { user_id: user.id, type: :invite, chat_token: chat_token }
+      message = {
+        user_id: user.id,
+        type: :invite,
+        chat_token: chat.token,
+        question: chat.question
+      }
       ActionCable.server.broadcast('appearance_channel', message)
       head :ok
     else

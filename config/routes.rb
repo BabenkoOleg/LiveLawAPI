@@ -7,13 +7,15 @@ Rails.application.routes.draw do
 
     resources :users, only: [:index, :show] do
       get 'search_email', on: :collection
+      post 'invite_to_chat'
     end
 
     resources :regions, only: [:index, :show]
     resources :cities, only: [:index, :show]
     resources :categories, only: [:index, :show]
     resources :questions, only: [:index, :show, :create]
-    resources :chats, only: [:show ,:create]
+    resources :chats, only: [:show, :create]
+    resources :chat_messages, only: [:create]
 
     get :get_token, to: 'guests#get_token'
 
