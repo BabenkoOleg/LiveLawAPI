@@ -32,3 +32,12 @@ end
 ].each do |name|
   Category.create(name: name)
 end
+
+Category.all.each do |category|
+  question = Question.create(
+    title: "Question for #{category.name}",
+    text: 'Hello, i\'m Viktor and my hands do not grow from the shoulders. What should I do?',
+    category: category,
+    user: User.first
+  )
+end
