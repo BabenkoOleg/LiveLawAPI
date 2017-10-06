@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
     @current_authorized_user ||= current_api_user || find_guests
   end
 
-  def register_user(params)
+  def register_user(user_params)
     user = User.find_by(email: user_params[:email])
 
     return user if user.present?

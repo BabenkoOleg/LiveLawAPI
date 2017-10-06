@@ -23,6 +23,8 @@ class Chat < ApplicationRecord
   belongs_to :category
   belongs_to :city
 
+  has_many :chat_messages
+
   # Fields ---------------------------------------------------------------------
 
   enum status: [:waiting_specialist, :paying, :conversation, :completed]
