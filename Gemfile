@@ -42,6 +42,8 @@ gem 'mina'
 gem 'mina-puma', require: false
 # Annotate Rails classes with schema and routes info
 gem 'annotate'
+# Classier solution for file uploads for Rails, Sinatra and other Ruby web frameworks
+gem 'carrierwave', '~> 1.0'
 
 group :development do
   # Preview mail in the browser instead of sending.
