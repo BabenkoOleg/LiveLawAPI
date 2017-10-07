@@ -67,6 +67,8 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   include UsersFilter
 
+  mount_uploader :avatar, AvatarUploader
+
   # Relations ------------------------------------------------------------------
 
   has_many :questions
