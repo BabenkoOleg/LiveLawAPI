@@ -43,9 +43,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    salt = 'Kiss my shiny metal ass, Fry!'
-    encoded_name = Base64.encode64(original_filename.ljust(32, salt)[0..31])
-    "#{encoded_name.chomp}.#{file.extension}"
+    "#{Digest::MD5.hexdigest(original_filename)}.#{file.extension}"
   end
 
 end
