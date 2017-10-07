@@ -19,6 +19,13 @@ class Api::UsersController < ApplicationController
     render json: @user
   end
 
+  # POST /users/1/upload_avatar
+  def upload_avatar
+    @user = User.find(params[:user_id])
+    @user.update(avatar: params[:avatar])
+    render json: { avatar_url: @user.avatar.url }
+  end
+
   # GET /users/search_email
   def search_email
     head User.find_by(email: params[:query]).present? ? :ok : :not_found

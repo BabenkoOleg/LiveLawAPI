@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :show] do
       get 'search_email', on: :collection
       post 'invite_to_chat'
+      post 'upload_avatar'
     end
 
     resources :regions, only: [:index, :show]
