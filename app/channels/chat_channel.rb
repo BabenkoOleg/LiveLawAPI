@@ -14,11 +14,16 @@ class ChatChannel < ApplicationCable::Channel
     end
   end
 
+  def receive(data)
+    chat_token = params[:chat_token]
+    ActionCable.server.broadcast("chat_#{chat_token}_channel", data)
+  end
+
   def unsubscribed
-    # if current_user.kind_of? User
-    #   message = { user_id: current_user.id, online: :off }
-    #   ActionCable.server.broadcast('appearance_channel', message)
-    #   current_user.update(online: false)
-    # end
+    if current_user.kind_of? User
+      message = { user_id: current_user.id, online: :off }
+      ActionCable.server.broadcast('appearance_channel', message)
+      current_user.update(online: false)
+    end
   end
 end
