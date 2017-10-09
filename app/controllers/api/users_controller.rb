@@ -28,7 +28,7 @@ class Api::UsersController < ApplicationController
 
   # GET /users/search_email
   def search_email
-    head User.find_by(email: params[:query]).present? ? :ok : :not_found
+    render json: { success: User.find_by(email: params[:query]).present? }
   end
 
   # POST /users/1/invite_to_chat
