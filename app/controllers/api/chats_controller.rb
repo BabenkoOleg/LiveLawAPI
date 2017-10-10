@@ -23,7 +23,9 @@ class Api::ChatsController < ApplicationController
   def show
     @chat = Chat.find_by(token: params[:id])
 
-    if @chat.present? && current_authorized_user.present?
+    if current_authorized_user.nil?
+      head :forbidden
+    elsif @chat.present?
       if [@chat.asker, @chat.answerer].include? current_authorized_user
         render json: @chat
       else
