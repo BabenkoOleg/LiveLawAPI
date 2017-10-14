@@ -20,6 +20,10 @@ Rails.application.routes.draw do
 
     get :get_token, to: 'guests#get_token'
 
+    get 'legal_library', to: 'legal_library#index'
+    get 'legal_library/categories/:id', to: 'legal_library#categories'
+    get 'legal_library/documents/:id', to: 'legal_library#documents'
+
     mount ActionCable.server => "/cable"
   end
 end
