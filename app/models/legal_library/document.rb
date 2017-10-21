@@ -2,12 +2,13 @@
 #
 # Table name: legal_library_documents
 #
-#  id          :integer          not null, primary key
-#  title       :string
-#  body        :text
-#  category_id :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id           :integer          not null, primary key
+#  title        :string
+#  free_content :text
+#  category_id  :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  paid_content :text
 #
 
 class LegalLibrary::Document < ApplicationRecord

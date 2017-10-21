@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011193244) do
+ActiveRecord::Schema.define(version: 20171021112415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -130,10 +130,11 @@ ActiveRecord::Schema.define(version: 20171011193244) do
 
   create_table "legal_library_documents", force: :cascade do |t|
     t.string "title"
-    t.text "body"
+    t.text "free_content"
     t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "paid_content"
   end
 
   create_table "metro_stations", force: :cascade do |t|
