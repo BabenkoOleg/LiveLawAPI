@@ -1,5 +1,5 @@
 class ChatSerializer < ActiveModel::Serializer
-  attributes :id, :question
+  attributes :id, :question, :status, :invited_at
   attribute :token, if: -> { should_render_chat_token }
   has_many :chat_messages
 end
