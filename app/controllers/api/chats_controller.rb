@@ -11,10 +11,10 @@ class Api::ChatsController < ApplicationController
     @users = User.where.not(role: 'client').where(online: true).limit(5)
 
     if @chat.save
-      render json: {
-        chat_token: @chat.token,
-        users: ActiveModelSerializers::SerializableResource.new(@users, {}).as_json[:users]
-      }, status: :created
+      user = ActiveModelSerializers::SerializableResource.new(@users, {})
+                                                         .as_json[:users]
+
+      render json: { chat_token: @chat.token, users: user }, status: :created
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
@@ -26,16 +26,18 @@ class Api::ChatsController < ApplicationController
     if current_authorized_user.nil?
       head :forbidden
     elsif @chat.present?
-      if [@chat.asker, @chat.answerer].include? current_authorized_user
-        specialist = ActiveModelSerializers::SerializableResource.new(@chat.answerer, {})
-        specialist = specialist.as_json[:user].slice(:id, :full_name, :role, :avatar_url)
+      if [@chat.asker_id, @chat.answerer_id].include? current_authorized_user.id
+        specialist =
+          ActiveModelSerializers::SerializableResource.new(@chat.answerer, {})
+        specialist =
+          specialist.as_json[:user].slice(:id, :full_name, :role, :avatar_url)
         chat = ActiveModelSerializers::SerializableResource.new(@chat, {})
 
         render json: {
           chat: chat.as_json[:chat].merge!({specialist: specialist })
         }, status: :ok
       else
-        error = 'Kiss my shiny metal ass, this is not your chat'
+        error = 'Sorry, this is not your chat'
         render json: { error: error }, status: :forbidden
       end
     else

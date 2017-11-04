@@ -4,7 +4,10 @@ class ChatChannel < ApplicationCable::Channel
     chat = Chat.find_by(token: chat_token)
 
     if chat.present?
-      if current_user.kind_of?(User) && ['lawyer', 'jurist'].include?(current_user.role) && chat.answerer.nil?
+      if current_user.kind_of?(User) &&
+         ['lawyer', 'jurist'].include?(current_user.role) &&
+         chat.answerer.nil?
+
         chat.update(answerer: current_user)
       end
 
@@ -15,6 +18,10 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   def receive(data)
+    data[:sender_id] = current_user.id
+    data[:sender_role] =
+      current_user.kind_of?(User) ? current_user.role : 'client'
+
     chat_token = params[:chat_token]
     ActionCable.server.broadcast("chat_#{chat_token}_channel", data)
   end

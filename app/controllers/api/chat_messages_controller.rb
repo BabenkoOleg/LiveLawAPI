@@ -10,14 +10,12 @@ class Api::ChatMessagesController < ApplicationController
       @message.sender = current_authorized_user
 
       if @message.save
-        message = { text: @message.text }
-
-        if current_authorized_user.kind_of?(User)
-          message[:sender_id] = @message.sender.id
-
-        elsif current_authorized_user.kind_of?(Guest)
-          message[:sender_token] = @message.sender.token
-        end
+        message = {}
+        message[:text] = @message.text
+        message[:sender_id] = current_authorized_user.id
+        message[:sender_role] =
+          current_authorized_user.kind_of?(User) ? current_authorized_user.role
+                                                 : 'client'
 
         ActionCable.server.broadcast("chat_#{chat.token}_channel", message)
         head :ok
