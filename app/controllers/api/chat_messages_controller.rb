@@ -11,6 +11,7 @@ class Api::ChatMessagesController < ApplicationController
 
       if @message.save
         message = {}
+        message[:type] = 'message'
         message[:text] = @message.text
         message[:sender_id] = current_authorized_user.id
         message[:sender_role] =
