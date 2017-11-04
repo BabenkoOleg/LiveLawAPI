@@ -15,7 +15,9 @@ Rails.application.routes.draw do
     resources :cities, only: [:index, :show]
     resources :categories, only: [:index, :show]
     resources :questions, only: [:index, :show, :create]
-    resources :chats, only: [:show, :create]
+    resources :chats, only: [:show, :create] do
+      get 'restore', on: :collection
+    end
     resources :chat_messages, only: [:create]
 
     get :get_token, to: 'guests#get_token'

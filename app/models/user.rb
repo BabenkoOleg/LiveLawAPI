@@ -103,6 +103,10 @@ class User < ActiveRecord::Base
     Chat.where(answerer_id: id).last.try(:token)
   end
 
+  def current_chat
+    Chat.where(answerer_id: id).last
+  end
+
   def token_validation_response
     ActiveModelSerializers::SerializableResource.new(self, {}).as_json[:user]
   end

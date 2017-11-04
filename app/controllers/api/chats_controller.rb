@@ -45,6 +45,22 @@ class Api::ChatsController < ApplicationController
     end
   end
 
+  def restore
+    if current_authorized_user.present? && (current_authorized_user.lawyer? || current_authorized_user.jurist?)
+      chat = current_authorized_user.current_chat
+      if chat.present?
+        chat = ActiveModelSerializers::SerializableResource.new(chat, {
+          chat_token: true
+        })
+        render json: { chat: chat.as_json[:chat] }, status: :ok
+      else
+        head :no_content
+      end
+    else
+      head :forbidden
+    end
+  end
+
   private
 
   def chat_params
