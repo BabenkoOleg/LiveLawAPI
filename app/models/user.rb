@@ -49,6 +49,7 @@
 #  userdata               :jsonb
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  chat_status            :integer          default("free")
 #
 # Indexes
 #
@@ -80,6 +81,7 @@ class User < ActiveRecord::Base
   # Fields ---------------------------------------------------------------------
 
   enum role: [:client, :lawyer, :jurist, :blocked]
+  enum chat_status: [:free, :invited, :chatting]
 
   # Methods --------------------------------------------------------------------
 
@@ -95,5 +97,13 @@ class User < ActiveRecord::Base
 
   def avatar_url
     avatar.try(:url)
+  end
+
+  def chat_token
+    Chat.where(answerer_id: id).last.try(:token)
+  end
+
+  def token_validation_response
+    ActiveModelSerializers::SerializableResource.new(self, {}).as_json[:user]
   end
 end

@@ -13,6 +13,7 @@
 #  status      :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  invited_at  :datetime
 #
 
 class Chat < ApplicationRecord
@@ -27,5 +28,18 @@ class Chat < ApplicationRecord
 
   # Fields ---------------------------------------------------------------------
 
-  enum status: [:waiting_specialist, :paying, :conversation, :completed]
+  enum status: [
+    :created,
+    :bought,
+    :invited,
+    :chatting,
+    :rejected,
+    :completed,
+  ]
+
+  # Methods --------------------------------------------------------------------
+
+  def fresh?
+    true
+  end
 end

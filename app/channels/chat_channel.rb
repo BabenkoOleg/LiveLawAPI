@@ -4,33 +4,48 @@ class ChatChannel < ApplicationCable::Channel
     chat = Chat.find_by(token: chat_token)
 
     if chat.present?
-      if current_user.kind_of?(User) &&
-         ['lawyer', 'jurist'].include?(current_user.role) &&
-         chat.answerer.nil?
+      if chat.fresh?
+        if current_user.kind_of?(User) && (current_user.lawyer? || current_user.jurist?) && chat.answerer.nil?
+          chat.update(answerer: current_user)
+          chat.chatting!
+          current_user.chatting!
+        end
 
-        chat.update(answerer: current_user)
+        stream_from "chat_#{chat_token}_channel"
+
+        ActionCable.server.broadcast("chat_#{chat_token}_channel", {
+          type: 'subscribe',
+          sender_id: current_user.id,
+          sender_role: sender_role
+        })
+      else
+        ActionCable.server.broadcast("chat_#{chat_token}_channel", { type: 'timeout' })
+        reject
       end
-
-      stream_from "chat_#{chat_token}_channel"
     else
       reject
     end
   end
 
-  def receive(data)
-    data[:sender_id] = current_user.id
-    data[:sender_role] =
-      current_user.kind_of?(User) ? current_user.role : 'client'
-
+  def receive(message)
+    message[:sender_id] = current_user.id
+    message[:sender_role] = sender_role
     chat_token = params[:chat_token]
-    ActionCable.server.broadcast("chat_#{chat_token}_channel", data)
+    ActionCable.server.broadcast("chat_#{chat_token}_channel", message)
   end
 
   def unsubscribed
-    if current_user.kind_of? User
-      message = { user_id: current_user.id, online: :off }
-      ActionCable.server.broadcast('appearance_channel', message)
-      current_user.update(online: false)
-    end
+    chat_token = params[:chat_token]
+    ActionCable.server.broadcast("chat_#{chat_token}_channel", {
+      type: 'unsubscribe',
+      sender_id: current_user.id,
+      sender_role: sender_role
+    })
+  end
+
+  private
+
+  def sender_role
+    current_user.kind_of?(User) ? current_user.role : 'client'
   end
 end

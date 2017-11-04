@@ -3,8 +3,8 @@ class Api::ChatsController < ApplicationController
   # POST /chats
   def create
     @chat = Chat.new(chat_params)
-    #@chat.status = :waiting_specialist
-    @chat.status = :conversation
+    #@chat.status = :created
+    @chat.status = :bought # ToDo: remove eto na her
     @chat.asker = current_authorized_user
     @chat.token = SecureRandom.urlsafe_base64(nil, false)
 

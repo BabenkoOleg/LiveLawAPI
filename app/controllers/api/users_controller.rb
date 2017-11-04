@@ -36,14 +36,17 @@ class Api::UsersController < ApplicationController
     user = User.find(params[:user_id])
     chat = Chat.find_by(token: params[:chat_token])
 
-    if (user.lawyer? || user.jurist?) && user.online?
-      message = {
+    if chat.created?
+      head :payment_required
+    elsif (user.lawyer? || user.jurist?) && user.online?
+      chat.update(answerer: user, invited_at: DateTime.now)
+      user.invited!
+      ActionCable.server.broadcast('appearance_channel', {
+        type: 'invite',
         user_id: user.id,
-        type: :invite,
         chat_token: chat.token,
         text: chat.question
-      }
-      ActionCable.server.broadcast('appearance_channel', message)
+      })
       head :ok
     else
       head :unprocessable_entity
