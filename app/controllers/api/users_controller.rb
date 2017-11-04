@@ -41,7 +41,7 @@ class Api::UsersController < ApplicationController
         user_id: user.id,
         type: :invite,
         chat_token: chat.token,
-        question: chat.question
+        text: chat.question
       }
       ActionCable.server.broadcast('appearance_channel', message)
       head :ok
