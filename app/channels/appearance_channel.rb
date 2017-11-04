@@ -3,7 +3,7 @@ class AppearanceChannel < ApplicationCable::Channel
     stream_from "appearance_channel"
 
     if current_user.kind_of? User
-      message = { user_id: current_user.id, online: :on }
+      message = { user_id: current_user.id, online: true }
       ActionCable.server.broadcast('appearance_channel', message)
       current_user.update(online: true)
     else
@@ -13,7 +13,7 @@ class AppearanceChannel < ApplicationCable::Channel
 
   def unsubscribed
     if current_user.kind_of? User
-      message = { user_id: current_user.id, online: :off }
+      message = { user_id: current_user.id, online: false }
       ActionCable.server.broadcast('appearance_channel', message)
       current_user.update(online: false)
     end
