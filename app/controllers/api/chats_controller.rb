@@ -11,9 +11,7 @@ class Api::ChatsController < ApplicationController
     @users = User.where.not(role: 'client').where(online: true).limit(5)
 
     if @chat.save
-      user = ActiveModelSerializers::SerializableResource.new(@users, {})
-                                                         .as_json[:users]
-
+      user = ActiveModelSerializers::SerializableResource.new(@users, {}).as_json[:users]
       render json: { chat_token: @chat.token, users: user }, status: :created
     else
       render json: @chat.errors, status: :unprocessable_entity
@@ -22,7 +20,7 @@ class Api::ChatsController < ApplicationController
 
   def active
     if current_authorized_user.present?
-      chat = current_authorized_user.current_chat
+      chat = current_authorized_user.active_chat
       if chat.present?
         user = get_interlocutor(chat)
         chat = ActiveModelSerializers::SerializableResource.new(chat, { chat_token: true })
@@ -35,6 +33,18 @@ class Api::ChatsController < ApplicationController
     end
   end
 
+  def reject
+    chat = current_authorized_user.active_chat
+    return head :no_content if chat.nil?
+    chat.answerer.free! if chat.answerer.present?
+    if chat.invited?
+      chat.bought!
+    elsif chat.chatting?
+      chat.completed!
+    end
+    head :ok
+  end
+
   private
 
   def chat_params
@@ -42,18 +52,18 @@ class Api::ChatsController < ApplicationController
   end
 
   def get_interlocutor(chat)
-    if current_authorized_user.kind_of?(User) && (current_authorized_user.lawyer? || current_authorized_user.jurist?)
+    if current_authorized_user.specialist?
       interlocutor = {
         id: chat.asker.id,
-        name: chat.name
+        name: chat.name,
+        avatar: nil
       }
-    else
-      if chat.answerer.present?
-        interlocutor = {
-          id: chat.answerer.id,
-          name: chat.answerer.full_name
-        }
-      end
+    elsif chat.answerer.present?
+      interlocutor = {
+        id: chat.answerer.id,
+        name: chat.answerer.full_name,
+        avatar: chat.asker.avatar_url
+      }
     end
   end
 end

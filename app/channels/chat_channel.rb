@@ -5,7 +5,7 @@ class ChatChannel < ApplicationCable::Channel
 
     if chat.present?
       if chat.fresh?
-        if current_user.kind_of?(User) && (current_user.lawyer? || current_user.jurist?) && chat.answerer.nil?
+        if current_user.specialist? && chat.answerer.nil?
           chat.update(answerer: current_user)
           chat.chatting!
           current_user.chatting!

@@ -34,7 +34,6 @@ class Chat < ApplicationRecord
     :bought,
     :invited,
     :chatting,
-    :rejected,
     :completed,
   ]
 

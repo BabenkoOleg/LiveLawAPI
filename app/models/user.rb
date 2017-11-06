@@ -91,6 +91,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def specialist?
+    lawyer? || jurist?
+  end
+
   def full_name
     [last_name, first_name, middle_name].compact.join(' ')
   end
@@ -103,7 +107,7 @@ class User < ActiveRecord::Base
     Chat.where(answerer_id: id).last.try(:token)
   end
 
-  def current_chat
+  def active_chat
     Chat.where(answerer_id: id).last
   end
 

@@ -12,11 +12,15 @@ class Guest < ApplicationRecord
 
   # Methods --------------------------------------------------------------------
 
+  def specialist?
+    false
+  end
+
   def chat_token
     Chat.where(asker_id: id).last.try(:token)
   end
 
-  def current_chat
+  def active_chat
     Chat.where(asker_id: id).last
   end
 end
