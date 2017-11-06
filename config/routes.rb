@@ -15,8 +15,9 @@ Rails.application.routes.draw do
     resources :cities, only: [:index, :show]
     resources :categories, only: [:index, :show]
     resources :questions, only: [:index, :show, :create]
-    resources :chats, only: [:show, :create] do
-      get 'restore', on: :collection
+    resources :chats, only: [:create] do
+      get 'active', on: :collection
+      post 'reject', on: :collection
     end
     resources :chat_messages, only: [:create]
 

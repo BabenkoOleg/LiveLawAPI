@@ -20,39 +20,13 @@ class Api::ChatsController < ApplicationController
     end
   end
 
-  def show
-    @chat = Chat.find_by(token: params[:id])
-
-    if current_authorized_user.nil?
-      head :forbidden
-    elsif @chat.present?
-      if [@chat.asker_id, @chat.answerer_id].include? current_authorized_user.id
-        specialist =
-          ActiveModelSerializers::SerializableResource.new(@chat.answerer, {})
-        specialist =
-          specialist.as_json[:user].slice(:id, :full_name, :role, :avatar_url)
-        chat = ActiveModelSerializers::SerializableResource.new(@chat, {})
-
-        render json: {
-          chat: chat.as_json[:chat].merge!({specialist: specialist })
-        }, status: :ok
-      else
-        error = 'Sorry, this is not your chat'
-        render json: { error: error }, status: :forbidden
-      end
-    else
-      head :not_found
-    end
-  end
-
-  def restore
-    if current_authorized_user.present? && (current_authorized_user.lawyer? || current_authorized_user.jurist?)
+  def active
+    if current_authorized_user.present?
       chat = current_authorized_user.current_chat
       if chat.present?
-        chat = ActiveModelSerializers::SerializableResource.new(chat, {
-          chat_token: true
-        })
-        render json: { chat: chat.as_json[:chat] }, status: :ok
+        user = get_interlocutor(chat)
+        chat = ActiveModelSerializers::SerializableResource.new(chat, { chat_token: true })
+        render json: { chat: chat.as_json[:chat].merge!({ user: user }) }, status: :ok
       else
         head :no_content
       end
@@ -64,6 +38,22 @@ class Api::ChatsController < ApplicationController
   private
 
   def chat_params
-    params.require(:chat).permit(:question, :city_id, :category_id)
+    params.require(:chat).permit(:question, :name, :city_id, :category_id)
+  end
+
+  def get_interlocutor(chat)
+    if current_authorized_user.kind_of?(User) && (current_authorized_user.lawyer? || current_authorized_user.jurist?)
+      interlocutor = {
+        id: chat.asker.id,
+        name: chat.name
+      }
+    else
+      if chat.answerer.present?
+        interlocutor = {
+          id: chat.answerer.id,
+          name: chat.answerer.full_name
+        }
+      end
+    end
   end
 end

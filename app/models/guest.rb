@@ -9,4 +9,14 @@
 #
 
 class Guest < ApplicationRecord
+
+  # Methods --------------------------------------------------------------------
+
+  def chat_token
+    Chat.where(asker_id: id).last.try(:token)
+  end
+
+  def current_chat
+    Chat.where(asker_id: id).last
+  end
 end

@@ -14,6 +14,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  invited_at  :datetime
+#  name        :string
 #
 
 class Chat < ApplicationRecord
