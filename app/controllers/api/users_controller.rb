@@ -39,7 +39,7 @@ class Api::UsersController < ApplicationController
     if chat.created?
       head :payment_required
     elsif (user.lawyer? || user.jurist?) && user.online?
-      chat.update(answerer: user, invited_at: DateTime.now)
+      chat.update(answerer: user, invited_at: DateTime.now.utc, status: 'invited')
       user.invited!
       ActionCable.server.broadcast('appearance_channel', {
         type: 'invite',

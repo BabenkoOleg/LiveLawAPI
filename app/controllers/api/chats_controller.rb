@@ -36,7 +36,15 @@ class Api::ChatsController < ApplicationController
   def reject
     chat = current_authorized_user.active_chat
     return head :no_content if chat.nil?
-    chat.answerer.free! if chat.answerer.present?
+    if chat.answerer.present?
+      chat.answerer.free!
+      chat.send_message({
+        type: 'reject',
+        sender_id: chat.answerer.id,
+        sender_role: chat.answerer.role
+      })
+      chat.update(answerer: nil)
+    end
     if chat.invited?
       chat.bought!
     elsif chat.chatting?
@@ -62,7 +70,7 @@ class Api::ChatsController < ApplicationController
       interlocutor = {
         id: chat.answerer.id,
         name: chat.answerer.full_name,
-        avatar: chat.asker.avatar_url
+        avatar: chat.answerer.avatar_url
       }
     end
   end

@@ -4,7 +4,7 @@ class Api::ChatMessagesController < ApplicationController
   def create
     chat = Chat.find_by(token: params[:chat_token])
 
-    if chat.present? && chat.status == 'conversation'
+    if chat.present?
       @message = ChatMessage.new(message_params)
       @message.chat = chat
       @message.sender = current_authorized_user

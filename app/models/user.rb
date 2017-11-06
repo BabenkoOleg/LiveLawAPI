@@ -78,6 +78,10 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :cities
 
+  # Callbacks ------------------------------------------------------------------
+
+  after_initialize :check_active_chat
+
   # Fields ---------------------------------------------------------------------
 
   enum role: [:client, :lawyer, :jurist, :blocked]
@@ -109,6 +113,12 @@ class User < ActiveRecord::Base
 
   def active_chat
     Chat.where(answerer_id: id).last
+  end
+
+  def check_active_chat
+    if specialist? && invited? && active_chat.present? && !active_chat.fresh?
+      free! && active_chat.bought! && active_chat.update(answerer: nil)
+    end
   end
 
   def token_validation_response

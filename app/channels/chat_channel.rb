@@ -4,23 +4,20 @@ class ChatChannel < ApplicationCable::Channel
     chat = Chat.find_by(token: chat_token)
 
     if chat.present?
-      if chat.fresh?
-        if current_user.specialist? && chat.answerer.nil?
-          chat.update(answerer: current_user)
-          chat.chatting!
-          current_user.chatting!
-        end
+      stream_from "chat_#{chat_token}_channel"
 
-        stream_from "chat_#{chat_token}_channel"
-
-        ActionCable.server.broadcast("chat_#{chat_token}_channel", {
-          type: 'subscribe',
-          sender_id: current_user.id,
-          sender_role: sender_role
-        })
-      else
+      if current_user.specialist? && chat.answerer.nil? && !chat.fresh?
         ActionCable.server.broadcast("chat_#{chat_token}_channel", { type: 'timeout' })
         reject
+      elsif current_user.specialist? && chat.answerer.nil? && chat.fresh?
+        chat.update(answerer: current_user)
+        chat.chatting!
+        current_user.chatting!
+        ActionCable.server.broadcast("chat_#{chat_token}_channel", { type: 'lawyer_subscribe' })
+      elsif current_user.specialist?
+        ActionCable.server.broadcast("chat_#{chat_token}_channel", { type: 'lawyer_subscribe' })
+      elsif !current_user.specialist?
+        ActionCable.server.broadcast("chat_#{chat_token}_channel", { type: 'client_subscribe' })
       end
     else
       reject

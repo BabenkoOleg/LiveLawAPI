@@ -40,6 +40,10 @@ class Chat < ApplicationRecord
   # Methods --------------------------------------------------------------------
 
   def fresh?
-    true
+    invited_at + 3.minutes > DateTime.now.utc
+  end
+
+  def send_message(message)
+    ActionCable.server.broadcast("chat_#{token}_channel", message)
   end
 end
