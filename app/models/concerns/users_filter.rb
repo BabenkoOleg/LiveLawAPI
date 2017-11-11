@@ -6,8 +6,6 @@ module UsersFilter
       users = self.where.not(role: 'client')
                   .page(params[:page] || 1).per(params[:per_page] || 20)
 
-      users = users.where(role: params[:role].split(',')) if params[:role]
-
       if params[:city]
         users = users.joins(:cities).where(cities: { id: params[:city].split(',') })
       end
@@ -34,6 +32,15 @@ module UsersFilter
 
       if params[:full_name]
         users = users.where('(first_name||last_name||middle_name) ~* ?', params[:full_name])
+      end
+
+      users = users.where(online: params[:online]) if params[:online]
+
+      if params[:chat]
+        chat = Chat.find_by(id: params[:chat])
+        if chat.present?
+          users = users.where.not(id: chat.rejected_ids)
+        end
       end
 
       return users

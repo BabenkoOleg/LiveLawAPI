@@ -2,19 +2,20 @@
 #
 # Table name: chats
 #
-#  id          :integer          not null, primary key
-#  question    :string
-#  asker_id    :integer
-#  asker_type  :string
-#  answerer_id :integer
-#  token       :string
-#  category_id :integer
-#  city_id     :integer
-#  status      :integer
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  invited_at  :datetime
-#  name        :string
+#  id           :integer          not null, primary key
+#  question     :string
+#  asker_id     :integer
+#  asker_type   :string
+#  answerer_id  :integer
+#  token        :string
+#  category_id  :integer
+#  city_id      :integer
+#  status       :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  invited_at   :datetime
+#  name         :string
+#  rejected_ids :integer          default([]), is an Array
 #
 
 class Chat < ApplicationRecord

@@ -11,8 +11,7 @@ class Api::ChatsController < ApplicationController
     @users = User.where.not(role: 'client').where(online: true).limit(5)
 
     if @chat.save
-      user = ActiveModelSerializers::SerializableResource.new(@users, {}).as_json[:users]
-      render json: { chat_token: @chat.token, users: user }, status: :created
+      render json: { chat_token: @chat.token }, status: :created
     else
       render json: @chat.errors, status: :unprocessable_entity
     end
@@ -46,7 +45,9 @@ class Api::ChatsController < ApplicationController
         sender_id: current_authorized_user.id,
         sender_role: current_authorized_user.role
       })
-      chat.update(answerer: nil)
+      chat.rejected_ids << chat.answerer.id
+      chat.answerer = nil
+      chat.save
     end
     if chat.invited?
       chat.bought!
