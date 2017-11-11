@@ -22,9 +22,12 @@ class Api::ChatsController < ApplicationController
     if current_authorized_user.present?
       chat = current_authorized_user.active_chat
       if chat.present?
-        user = get_interlocutor(chat)
-        chat = ActiveModelSerializers::SerializableResource.new(chat, { chat_token: true })
-        render json: { chat: chat.as_json[:chat].merge!({ user: user }) }, status: :ok
+        render json: {
+          chat: ActiveModelSerializers::SerializableResource.new(chat, { chat_token: true }).as_json[:chat].merge!({
+            client: get_client_data(chat),
+            lawyer: get_lawyer_data(chat)
+          })
+        }, status: :ok
       else
         head :no_content
       end
@@ -40,8 +43,8 @@ class Api::ChatsController < ApplicationController
       chat.answerer.free!
       chat.send_message({
         type: 'reject',
-        sender_id: chat.answerer.id,
-        sender_role: chat.answerer.role
+        sender_id: current_authorized_user.id,
+        sender_role: current_authorized_user.role
       })
       chat.update(answerer: nil)
     end
@@ -59,19 +62,16 @@ class Api::ChatsController < ApplicationController
     params.require(:chat).permit(:question, :name, :city_id, :category_id)
   end
 
-  def get_interlocutor(chat)
-    if current_authorized_user.specialist?
-      interlocutor = {
-        id: chat.asker.id,
-        name: chat.name,
-        avatar: nil
-      }
-    elsif chat.answerer.present?
-      interlocutor = {
-        id: chat.answerer.id,
-        name: chat.answerer.full_name,
-        avatar: chat.answerer.avatar_url
-      }
-    end
+  def get_client_data(chat)
+    { id: chat.asker.id, name: chat.name, avatar: nil }
+  end
+
+  def get_lawyer_data(chat)
+    return nil if chat.answerer.nil?
+    {
+      id: chat.answerer.id,
+      name: chat.answerer.full_name,
+      avatar: chat.answerer.avatar_url
+    }
   end
 end

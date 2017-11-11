@@ -20,4 +20,10 @@ class ChatMessage < ApplicationRecord
 
   belongs_to :sender, polymorphic: true
   belongs_to :chat
+
+  # Methods --------------------------------------------------------------------
+
+  def sender_role
+    sender.kind_of?(User) ? sender.role : 'client'
+  end
 end

@@ -16,6 +16,10 @@ class Guest < ApplicationRecord
     false
   end
 
+  def role
+    'client'
+  end
+
   def chat_token
     Chat.where(asker_id: id).last.try(:token)
   end
