@@ -75,7 +75,9 @@ class User < ActiveRecord::Base
   has_many :questions
   has_many :bought_categories
   has_many :categories, through: :bought_categories
+  has_many :conversation_messages, class_name: 'Conversation::Message'
 
+  has_and_belongs_to_many :conversation_rooms, class_name: 'Conversation::Room'
   has_and_belongs_to_many :cities
 
   # Callbacks ------------------------------------------------------------------

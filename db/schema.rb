@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171111124130) do
+ActiveRecord::Schema.define(version: 20171118083030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,29 @@ ActiveRecord::Schema.define(version: 20171111124130) do
     t.datetime "updated_at", null: false
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "conversation_messages", force: :cascade do |t|
+    t.integer "room_id"
+    t.integer "user_id"
+    t.boolean "read", default: false
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_conversation_messages_on_room_id"
+    t.index ["user_id"], name: "index_conversation_messages_on_user_id"
+  end
+
+  create_table "conversation_rooms", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "conversation_rooms_users", id: false, force: :cascade do |t|
+    t.integer "room_id"
+    t.integer "user_id"
+    t.index ["room_id"], name: "index_conversation_rooms_users_on_room_id"
+    t.index ["user_id"], name: "index_conversation_rooms_users_on_user_id"
   end
 
   create_table "guests", force: :cascade do |t|
