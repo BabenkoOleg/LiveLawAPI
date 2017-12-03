@@ -31,6 +31,8 @@ gem 'devise_token_auth'
 gem "figaro"
 # ActiveModel::Serializer implementation and Rails hooks
 gem 'active_model_serializers'
+gem 'activerecord-import'
+gem 'faker'
 # A Scope & Engine based, clean, powerful, customizable and sophisticated paginator for modern web app frameworks and ORMs
 gem 'kaminari'
 # Pretty print your Ruby objects with style -- in full color and with proper indentation

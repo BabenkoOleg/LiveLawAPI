@@ -20,6 +20,9 @@ Rails.application.routes.draw do
       post 'reject', on: :collection
     end
     resources :chat_messages, only: [:create]
+    resources :conversations, only: [:index, :show] do
+
+    end
 
     get :get_token, to: 'guests#get_token'
 

@@ -1,5 +1,4 @@
 class Api::ChatMessagesController < ApplicationController
-
   # POST /chat_messages
   def create
     chat = Chat.find_by(token: params[:chat_token])

@@ -75,9 +75,7 @@ class User < ActiveRecord::Base
   has_many :questions
   has_many :bought_categories
   has_many :categories, through: :bought_categories
-  has_many :conversation_messages, class_name: 'Conversation::Message'
 
-  has_and_belongs_to_many :conversation_rooms, class_name: 'Conversation::Room'
   has_and_belongs_to_many :cities
 
   # Callbacks ------------------------------------------------------------------
@@ -125,5 +123,9 @@ class User < ActiveRecord::Base
 
   def token_validation_response
     ActiveModelSerializers::SerializableResource.new(self, {}).as_json[:user]
+  end
+
+  def dialogs
+    Conversation::Dialog.where('user_1_id = ? or user_2_id = ?', id, id)
   end
 end
