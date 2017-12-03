@@ -31,6 +31,12 @@ class Conversation::Dialog < ApplicationRecord
       { dialogs: dialogs.values }
     end
 
+    def common(user_1, user_2)
+      dialog = find_by('user_1_id = ? and user_2_id = ?', user_1.id, user_2.id)
+      dialog ||= find_by('user_1_id = ? and user_2_id = ?', user_2.id, user_1.id)
+      dialog.present? ? dialog : create(user_1_id: user_1.id, user_2_id: user_1.id)
+    end
+
     private
 
     def dialogs_for_user(user)
