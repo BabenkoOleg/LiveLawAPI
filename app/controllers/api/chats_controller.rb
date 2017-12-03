@@ -1,5 +1,4 @@
 class Api::ChatsController < ApplicationController
-
   # POST /chats
   def create
     @chat = Chat.new(chat_params)

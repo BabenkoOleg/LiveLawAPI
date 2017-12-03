@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     end
     resources :chat_messages, only: [:create]
     resources :conversations, only: [:index, :show] do
-
+      post ':id', to: 'conversations#create', on: :collection
     end
 
     get :get_token, to: 'guests#get_token'

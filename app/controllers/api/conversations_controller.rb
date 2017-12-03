@@ -1,11 +1,13 @@
 class Api::ConversationsController < ApplicationController
   before_action :authenticate_api_user!
 
+  # GET /conversations
   def index
     dialogs = Conversation::Dialog.json_for_index(current_api_user)
     render json: dialogs
   end
 
+  # GET /conversations/1
   def show
     user = User.find(params[:id])
     dialog = Conversation::Dialog.common(current_api_user, user)
@@ -22,5 +24,23 @@ class Api::ConversationsController < ApplicationController
         :sender_id, :text, :read, :created_at
       ])
     }
+  end
+
+  # POST /conversations/1
+  def create
+    user = User.find(params[:id])
+    dialog = Conversation::Dialog.common(current_api_user, user)
+    message = dialog.messages.new(
+      sender: current_api_user,
+      recipient: user,
+      text: params[:text]
+    )
+    if message.save
+      render json: message.as_json(only: [
+        :sender_id, :text, :read, :created_at
+      ])
+    else
+      render json: message.errors, status: :unprocessable_entity
+    end
   end
 end
