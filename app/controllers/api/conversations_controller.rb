@@ -11,7 +11,7 @@ class Api::ConversationsController < ApplicationController
   def show
     user = User.find(params[:id])
     dialog = Conversation::Dialog.common(current_api_user, user)
-    messages = dialog.messages
+    messages = dialog.messages.order(created_at: :desc)
     render json: {
       page: (params[:page] || 1).to_i,
       total: messages.count,
@@ -36,12 +36,7 @@ class Api::ConversationsController < ApplicationController
       text: params[:text]
     )
     if message.save
-      ActionCable.server.broadcast('appearance_channel', {
-        type: 'new_message',
-        user_id: user.id,
-        sender_id: current_api_user.id,
-        message_id: message.id
-      })
+      broadcast_new_message(message)
       render json: message.as_json(only: [
         :sender_id, :text, :read, :created_at
       ])
@@ -56,5 +51,37 @@ class Api::ConversationsController < ApplicationController
     dialog = Conversation::Dialog.common(current_api_user, user)
     dialog.messages.where(recipient: current_api_user).update(read: true)
     head :ok
+  end
+
+  private
+
+  def broadcast_new_message(message)
+    is_chat_open = ActionCable.server.connections.select do |connection|
+      connection.current_user.id == message.recipient.id
+    end.map do |connection|
+      connection.subscriptions.identifiers.map do |identifier|
+        JSON.parse(identifier)
+      end
+    end.flatten.select do |subscription|
+      subscription['channel'] == 'ConversationChannel' &&
+      subscription['id'] == message.sender.id
+    end.any?
+
+    if is_chat_open
+      id = [message.sender.id, message.recipient.id].sort.join('#')
+      ActionCable.server.broadcast("conversations_#{id}_channel", {
+        type: 'message',
+        text: message.text,
+        sender_id: message.sender.id,
+        created_at: message.created_at
+      })
+    else
+      ActionCable.server.broadcast('appearance_channel', {
+        type: 'message',
+        user_id: message.recipient.id,
+        sender_id: message.sender.id,
+        message_id: message.id
+      })
+    end
   end
 end
