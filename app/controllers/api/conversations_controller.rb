@@ -3,8 +3,8 @@ class Api::ConversationsController < ApplicationController
 
   # GET /conversations
   def index
-    dialogs = Conversation::Dialog.json_for_index(current_api_user)
-    render json: dialogs
+    conversations = Conversation::Dialog.json_for_index(current_api_user)
+    render json: conversations
   end
 
   # GET /conversations/1
@@ -42,5 +42,13 @@ class Api::ConversationsController < ApplicationController
     else
       render json: message.errors, status: :unprocessable_entity
     end
+  end
+
+  # POST /conversations/1/read
+  def read
+    user = User.find(params[:id])
+    dialog = Conversation::Dialog.common(current_api_user, user)
+    dialog.messages.where(recipient: current_api_user).update(read: true)
+    head :ok
   end
 end

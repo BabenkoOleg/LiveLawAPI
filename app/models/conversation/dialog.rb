@@ -28,7 +28,7 @@ class Conversation::Dialog < ApplicationRecord
       set_users(dialogs)
       set_last_messages(dialogs)
 
-      { dialogs: dialogs.values }
+      { conversations: dialogs.values }
     end
 
     def common(user_1, user_2)
