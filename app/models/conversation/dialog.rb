@@ -20,15 +20,24 @@ class Conversation::Dialog < ApplicationRecord
   # Methods --------------------------------------------------------------------
 
   class << self
-    def json_for_index(user)
-      dialogs = dialogs_for_user(user)
+    def json_for_index(user, page)
+      conversations = where('user_1_id = ? or user_2_id = ?', user.id, user.id)
+
+      data = { page: page.to_i, total: conversations.count }
+
+      dialogs = {}
+      conversations.page(page).map do |item|
+        user_id = user.id == item.user_1_id ? item.user_2_id : item.user_1_id
+        dialogs[item.id] = { user_id: user_id }
+      end
 
       set_totals(dialogs)
       set_unreads(dialogs, user)
       set_users(dialogs)
       set_last_messages(dialogs)
 
-      { conversations: dialogs.values }
+      data[:conversations] = dialogs.values
+      data
     end
 
     def common(user_1, user_2)
@@ -38,16 +47,6 @@ class Conversation::Dialog < ApplicationRecord
     end
 
     private
-
-    def dialogs_for_user(user)
-      dialogs = where('user_1_id = ? or user_2_id = ?', user.id, user.id)
-      data = {}
-      dialogs.map do |item|
-        user_id = user.id == item.user_1_id ? item.user_2_id : item.user_1_id
-        data[item.id] = { user_id: user_id }
-      end
-      data
-    end
 
     def set_users(dialogs)
       users = {}

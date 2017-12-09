@@ -3,7 +3,8 @@ class Api::ConversationsController < ApplicationController
 
   # GET /conversations
   def index
-    conversations = Conversation::Dialog.json_for_index(current_api_user)
+    conversations =
+      Conversation::Dialog.json_for_index(current_api_user, params[:page] || 1)
     render json: conversations
   end
 
