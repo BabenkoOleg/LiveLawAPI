@@ -2,19 +2,11 @@ class Api::QuestionsController < ApplicationController
   # GET /questions
   def index
     @questions = Question.filter_by(params)
-
-    if params[:page].present?
-      pagination = {
-        total_count: @questions.total_count,
-        current_page: @questions.current_page
-      }
-      collection =
-        ActiveModelSerializers::SerializableResource.new(@questions, {}).as_json
-
-      render json: { result: collection, pagination: pagination }
-    else
-      render json: @questions
-    end
+    render json: {
+      page: @questions.current_page,
+      total: @questions.total_count,
+      users: @questions
+    }
   end
 
   # GET /questions/1

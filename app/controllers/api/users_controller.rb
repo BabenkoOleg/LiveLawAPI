@@ -2,15 +2,11 @@ class Api::UsersController < ApplicationController
   # GET /users
   def index
     @users = User.filter_by(params)
-
-    if params[:page].present?
-      pagination = { total_count: @users.total_count, current_page: @users.current_page }
-      collection = ActiveModelSerializers::SerializableResource.new(@users, {}).as_json
-
-      render json: { result: collection, pagination: pagination }
-    else
-      render json: @users
-    end
+    render json: {
+      page: @users.current_page,
+      total: @users.total_count,
+      users: @users
+    }
   end
 
   # GET /users/1
