@@ -36,6 +36,12 @@ class Api::ConversationsController < ApplicationController
       text: params[:text]
     )
     if message.save
+      ActionCable.server.broadcast('appearance_channel', {
+        type: 'new_message',
+        user_id: user.id,
+        sender_id: current_api_user.id,
+        message_id: message.id
+      })
       render json: message.as_json(only: [
         :sender_id, :text, :read, :created_at
       ])
