@@ -5,7 +5,7 @@ class Api::CitiesController < ApplicationController
     render json: @cities
   end
 
-  # GET /cities/1
+  # GET /cities/:id
   def show
     @city = City.find(params[:id])
     render json: @city

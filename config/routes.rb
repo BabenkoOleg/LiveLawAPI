@@ -14,7 +14,10 @@ Rails.application.routes.draw do
     resources :regions, only: [:index, :show]
     resources :cities, only: [:index, :show]
     resources :categories, only: [:index, :show]
-    resources :questions, only: [:index, :show, :create]
+    resources :questions, only: [:index, :show, :create] do
+      get 'comments', to: 'comments#index'
+      post 'comments', to: 'comments#create'
+    end
     resources :chats, only: [:create] do
       get 'active', on: :collection
       post 'reject', on: :collection

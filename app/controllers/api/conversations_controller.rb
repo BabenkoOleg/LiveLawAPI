@@ -8,7 +8,7 @@ class Api::ConversationsController < ApplicationController
     render json: conversations
   end
 
-  # GET /conversations/1
+  # GET /conversations/:id
   def show
     user = User.find(params[:id])
     dialog = Conversation::Dialog.common(current_api_user, user)
@@ -27,7 +27,7 @@ class Api::ConversationsController < ApplicationController
     }
   end
 
-  # POST /conversations/1
+  # POST /conversations/:id
   def create
     user = User.find(params[:id])
     dialog = Conversation::Dialog.common(current_api_user, user)
@@ -46,7 +46,7 @@ class Api::ConversationsController < ApplicationController
     end
   end
 
-  # POST /conversations/1/read
+  # POST /conversations/:id/read
   def read
     user = User.find(params[:id])
     dialog = Conversation::Dialog.common(current_api_user, user)

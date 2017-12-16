@@ -5,7 +5,7 @@ class Api::CategoriesController < ApplicationController
     render json: @categories
   end
 
-  # GET /categories/1
+  # GET /categories/:id
   def show
     @category = Category.find(params[:id])
     render json: @category, show_prices: true

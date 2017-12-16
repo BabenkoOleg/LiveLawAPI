@@ -32,7 +32,9 @@ class Api::QuestionsController < ApplicationController
   def question_params
     params.require(:question)
           .permit(:title, :text, :category_id,
-                  file_containers_attributes: %w[file @original_filename @content_type @headers _destroy id])
+                  file_containers_attributes: %w[
+                    file @original_filename @content_type @headers _destroy id
+                  ])
   end
 
   def user_params
