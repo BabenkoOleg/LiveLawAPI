@@ -1,4 +1,5 @@
 class Api::CommentsController < ApplicationController
+  before_action :authenticate_api_user!
   before_action :set_question, only: [:index, :create]
 
   # GET /questions/:id/comment
