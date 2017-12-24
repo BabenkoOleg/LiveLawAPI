@@ -1,6 +1,6 @@
 class Api::RegionsController < ApplicationController
   def index
-    regions = Region.all
+    regions = Region.all.includes(:cities)
     render json: regions
   end
 

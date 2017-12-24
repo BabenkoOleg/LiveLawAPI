@@ -6,9 +6,11 @@ class ApplicationController < ActionController::API
   end
 
   def register_user(user_params)
-    user = User.find_by(email: user_params[:email])
-
-    return user if user.present?
+    if User.find_by(email: user_params[:email])
+      render json: {
+        'errors': ['You need to sign in or sign up before continuing.']
+      }, status: :unauthorized
+    end
 
     password = User.random_password
     user = User.create(
@@ -17,10 +19,9 @@ class ApplicationController < ActionController::API
       password:              password,
       password_confirmation: password,
       confirmed_at:          DateTime.now,
-      role:                  :client
+      role:                  :client,
+      city:                  City.find_by(id: user_params[:city_id])
     )
-
-    user.cities << City.find_by(id: user_params[:city_id])
 
     client_id = SecureRandom.urlsafe_base64(nil, false)
     token     = SecureRandom.urlsafe_base64(nil, false)

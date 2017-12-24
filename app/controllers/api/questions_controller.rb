@@ -12,7 +12,10 @@ class Api::QuestionsController < ApplicationController
   # GET /questions/1
   def show
     question = Question.find(params[:id])
-    render json: as_json_without_root(question, show_comments: true)
+
+    render json: as_json_without_root(question, show_comments: true).merge!({
+      comments: question.comments.page(1).as_json
+    })
   end
 
   # POST /questions

@@ -1,7 +1,7 @@
 class Api::CitiesController < ApplicationController
   # GET /cities
   def index
-    cities = City.filter_by(params)
+    cities = City.filter_by(params).includes(:region, :metro_stations)
     render json: cities
   end
 
