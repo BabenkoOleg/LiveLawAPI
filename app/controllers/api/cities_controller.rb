@@ -1,13 +1,13 @@
 class Api::CitiesController < ApplicationController
   # GET /cities
   def index
-    @cities = City.filter_by(params)
-    render json: @cities
+    cities = City.filter_by(params)
+    render json: cities
   end
 
   # GET /cities/:id
   def show
-    @city = City.find(params[:id])
-    render json: @city
+    city = City.find(params[:id])
+    render json: as_json_without_root(city)
   end
 end

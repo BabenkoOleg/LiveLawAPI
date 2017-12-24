@@ -35,6 +35,13 @@ class ApplicationController < ActionController::API
     return user
   end
 
+  protected
+
+  def as_json_without_root(entity, options = {})
+    data = ActiveModelSerializers::SerializableResource.new(entity, options)
+    data.as_json.values.first
+  end
+
   private
 
   def find_guests

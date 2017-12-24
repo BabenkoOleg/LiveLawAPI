@@ -1,25 +1,25 @@
 class Api::UsersController < ApplicationController
   # GET /users
   def index
-    @users = User.filter_by(params)
+    users = User.filter_by(params)
     render json: {
-      page: @users.current_page,
-      total: @users.total_count,
-      users: @users
+      page: users.current_page,
+      total: users.total_count,
+      users: users
     }
   end
 
   # GET /users/:id
   def show
-    @user = User.find(params[:id])
-    render json: @user
+    user = User.find(params[:id])
+    render json: as_json_without_root(user)
   end
 
   # POST /users/:id/upload_avatar
   def upload_avatar
-    @user = User.find(params[:user_id])
-    @user.update(avatar: params[:avatar])
-    render json: { avatar_url: @user.avatar.url }
+    user = User.find(params[:user_id])
+    user.update(avatar: params[:avatar])
+    render json: { avatar_url: user.avatar.url }
   end
 
   # GET /users/search_email
