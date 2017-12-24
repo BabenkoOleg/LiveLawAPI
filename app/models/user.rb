@@ -73,7 +73,7 @@ class User < ActiveRecord::Base
 
   # Relations ------------------------------------------------------------------
 
-  belongs_to :city
+  belongs_to :city, required: false
 
   has_many :questions
   has_many :bought_categories
