@@ -1,7 +1,7 @@
 class Api::QuestionsController < ApplicationController
   # GET /questions
   def index
-    questions = Question.filter_by(params)
+    questions = Question.filter_by(params).includes(:category, :user)
     render json: {
       page: questions.current_page,
       total: questions.total_count,
