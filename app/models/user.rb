@@ -50,6 +50,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  chat_status            :integer          default("free")
+#  city_id                :integer
 #
 # Indexes
 #
@@ -72,11 +73,11 @@ class User < ActiveRecord::Base
 
   # Relations ------------------------------------------------------------------
 
+  belongs_to :city
+
   has_many :questions
   has_many :bought_categories
   has_many :categories, through: :bought_categories
-
-  has_and_belongs_to_many :cities
 
   # Callbacks ------------------------------------------------------------------
 
@@ -86,6 +87,11 @@ class User < ActiveRecord::Base
 
   enum role: [:client, :lawyer, :jurist, :blocked]
   enum chat_status: [:free, :invited, :chatting]
+
+  # Delegates ------------------------------------------------------------------
+
+  delegate :region, to: :city, allow_nil: true
+  delegate :url, to: :avatar, allow_nil: true, prefix: :avatar
 
   # Methods --------------------------------------------------------------------
 

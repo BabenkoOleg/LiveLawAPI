@@ -27,13 +27,10 @@ class City < ApplicationRecord
 
   belongs_to :region
 
+  has_many :users
   has_many :metro_stations
 
-  has_and_belongs_to_many :users
+  # Delegates ------------------------------------------------------------------
 
-  # Methods --------------------------------------------------------------------
-
-  def region_name
-    region.name
-  end
+  delegate :name, to: :region, prefix: :region
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171203173055) do
+ActiveRecord::Schema.define(version: 20171224085631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,13 +109,6 @@ ActiveRecord::Schema.define(version: 20171203173055) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["region_id"], name: "index_cities_on_region_id"
-  end
-
-  create_table "cities_users", id: false, force: :cascade do |t|
-    t.bigint "city_id"
-    t.bigint "user_id"
-    t.index ["city_id"], name: "index_cities_users_on_city_id"
-    t.index ["user_id"], name: "index_cities_users_on_user_id"
   end
 
   create_table "comments", id: :serial, force: :cascade do |t|
@@ -246,6 +239,7 @@ ActiveRecord::Schema.define(version: 20171203173055) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "chat_status", default: 0
+    t.integer "city_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -254,7 +248,5 @@ ActiveRecord::Schema.define(version: 20171203173055) do
 
   add_foreign_key "category_prices", "categories"
   add_foreign_key "cities", "regions"
-  add_foreign_key "cities_users", "cities"
-  add_foreign_key "cities_users", "users"
   add_foreign_key "metro_stations", "cities"
 end
