@@ -5,7 +5,7 @@ class Api::QuestionsController < ApplicationController
     render json: {
       page: questions.current_page,
       total: questions.total_count,
-      questions: questions
+      questions: as_json_without_root(questions, include: 'user,category')
     }
   end
 

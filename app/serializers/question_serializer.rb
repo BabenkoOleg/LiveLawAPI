@@ -1,6 +1,7 @@
 class QuestionSerializer < ActiveModel::Serializer
   attributes :id, :title, :text, :category, :charged, :created_at
   belongs_to :user, serializer: SimpleUserSerializer
+  belongs_to :category, serializer: CategorySerializer
   # has_many :comments, if: -> { should_render_comments }
 
   def should_render_comments
