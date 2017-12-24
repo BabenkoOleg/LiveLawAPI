@@ -90,6 +90,7 @@ class User < ActiveRecord::Base
 
   # Delegates ------------------------------------------------------------------
 
+  delegate :name, to: :city, allow_nil: true, prefix: :city
   delegate :region, to: :city, allow_nil: true
   delegate :url, to: :avatar, allow_nil: true, prefix: :avatar
 
