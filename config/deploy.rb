@@ -11,7 +11,7 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 
 set :application_name, 'livelaw'
 set :domain, '5.101.78.188'
-set :deploy_to, '/home/oleg/livelaw'
+set :deploy_to, '/var/www/livelaw/api'
 set :repository, 'git@github.com:BabenkoOleg/LiveLawAPI.git'
 set :branch, 'master'
 
