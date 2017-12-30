@@ -13,8 +13,12 @@ class Api::QuestionsController < ApplicationController
   def show
     question = Question.find(params[:id])
 
-    render json: as_json_without_root(question, show_comments: true).merge!({
-      comments: question.comments.page(1).as_json
+    comments = ActiveModelSerializers::SerializableResource.new(
+      question.comments.page(1).includes(comments: :user)
+    ).as_json[:comments]
+
+    render json: as_json_without_root(question).merge!({
+      comments: comments
     })
   end
 

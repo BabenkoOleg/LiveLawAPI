@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::API
   include DeviseTokenAuth::Concerns::SetUserByToken
 
+  def current_user
+    User.first
+  end
+
   def current_authorized_user
     @current_authorized_user ||= current_api_user || find_guests
   end
