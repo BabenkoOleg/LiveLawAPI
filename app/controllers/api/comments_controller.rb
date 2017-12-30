@@ -26,7 +26,7 @@ class Api::CommentsController < ApplicationController
     comment.user = current_api_user
 
     if comment.save
-      render json: comment, status: :created
+      render json: as_json_without_root(comment), status: :created
     else
       render json: comment.errors, status: :unprocessable_entity
     end
