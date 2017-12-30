@@ -10,13 +10,14 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
   # branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'livelaw'
-set :domain, '5.101.78.188'
+set :domain, '188.227.17.69'
 set :deploy_to, '/var/www/livelaw/api'
 set :repository, 'git@github.com:BabenkoOleg/LiveLawAPI.git'
 set :branch, 'master'
+set :rvm_use_path, '/usr/local/rvm/scripts/rvm'
 
 # Optional settings:
-set :user, 'oleg'                # Username in the server to SSH to.
+set :user, 'root'                # Username in the server to SSH to.
 set :forward_agent, true         # SSH forward_agent.
 
 # shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
@@ -25,7 +26,7 @@ set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/
 
 task :environment do
   # For those using RVM, use this to load an RVM version@gemset.
-  invoke :'rvm:use', 'ruby-2.4.1'
+  invoke :'rvm:use', 'ruby-2.3.1'
 end
 
 # Put any custom commands you need to run at setup
